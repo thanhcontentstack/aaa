@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+
+   id="svg16"
+   viewBox="0 0 200 200" width="110" height="110">
+<!-- define the gradient -->
+  <defs>
+    <!-- x1,y1,x2,y2 are used to define the gradient direction -->
+    <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="50%">
+      <!-- start color at 0%-->
+      <stop offset="0%"   stop-color="#DA291C"/>
+      <!-- end color at 100%-->
+      <stop offset="100%" stop-color="#003087"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="80" stroke="url(#linear)" stroke-width="25" fill="transparent"/>
+</svg>
