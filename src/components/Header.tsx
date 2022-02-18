@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { VscSearch } from 'react-icons/vsc';
 import { IoMdArrowForward } from 'react-icons/io';
-import aaaLogo from '../assets/aaa-logo.png';
 import '../styles/header.scss';
 
 const requestHeaders: HeadersInit = new Headers();
@@ -17,7 +16,8 @@ interface IState {
     joinButton: ILink,
     mainMenu: any[],
     menuContent: any,
-    displayMenuContent: string
+    displayMenuContent: string,
+    logo: string
 }
 
 interface ILink {
@@ -39,7 +39,8 @@ export class Header extends Component<IProps, IState> {
             },
             mainMenu: [],
             menuContent: {},
-            displayMenuContent: "none"
+            displayMenuContent: "none",
+            logo: ''
         }
     }
 
@@ -56,14 +57,15 @@ export class Header extends Component<IProps, IState> {
           })
       
           let response = await createGlobalField.json();
-        //   console.log(response.entry.main_menu);
+          console.log(response.entry.aaa_logo.url);
           let entry = response.entry;
 
           this.setState({
             joinButton: entry.join_button,
             topMenu: entry.top_menu,
             mainMenu: entry.main_menu,
-            menuContent: entry.main_menu[0].menu
+            menuContent: entry.main_menu[0].menu,
+            logo: response.entry.aaa_logo.url
           });
 
           console.log(this.state.menuContent);
@@ -103,7 +105,7 @@ export class Header extends Component<IProps, IState> {
             <div>
                 <header className="">
                     <a className="aaa-header__logo" href="/" data-trk="MainNavLogo" aria-label="AAA Logo, Home Page">
-                        <img src={aaaLogo} alt="AAA Logo" />
+                        <img src={this.state.logo} alt="AAA Logo" />
                     </a>
                     <div className="top-navigation">
                         <ul className="top-nav">
