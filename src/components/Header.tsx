@@ -45,7 +45,7 @@ export class Header extends Component<IProps, IState> {
     }
 
     async getNavigationMenu() {
-        console.log('get navigation menu');
+        // console.log('get navigation menu');
         let contentTypeUid = 'navigation_menu';
         let entryUid = 'bltf81a6505347ef813';
     
@@ -57,7 +57,7 @@ export class Header extends Component<IProps, IState> {
           })
       
           let response = await createGlobalField.json();
-          console.log(response.entry.aaa_logo.url);
+        //   console.log(response.entry.aaa_logo.url);
           let entry = response.entry;
 
           this.setState({
@@ -68,10 +68,10 @@ export class Header extends Component<IProps, IState> {
             logo: response.entry.aaa_logo.url
           });
 
-          console.log(this.state.menuContent);
+        //   console.log(this.state.menuContent);
       
         } catch(error) {
-          console.log(error);
+        //   console.log(error);
           this.setState({
             isLoading: false,
           })
