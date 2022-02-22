@@ -9,7 +9,7 @@ const themeOptions = {
   palette: {
     type: 'light',
     primary: {
-      main: '#005095',
+      main: '#fff',
     }, 
     secondary: {
       main: '#4470bf',

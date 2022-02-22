@@ -1,6 +1,8 @@
 
 header {
     position: relative;
+    background-color: #005095;
+    height: 100px;
 
     .aaa-header__logo {
         position: absolute;
@@ -13,16 +15,17 @@ header {
       
       .top-navigation {
         background-color: #005095;
-        height: 30px;
+        height: 50px;
+        margin-bottom: 1em;
       
         ul.top-nav {
           list-style-type: none;
-          margin: 0 1em 0 0;
-          padding: 3px 0 0 0;
+          margin: 1.8em 1.5em 0 0;
           float: right;
       
           li {
             display: inline;
+            padding: 3px;
           }
       
           a {
@@ -43,13 +46,18 @@ header {
         padding: 8px;
         position: relative;
         background-color: #005095;
+        height: 65px;
       
         ul.main-nav {
           list-style-type: none;
-          padding: 0;
+          padding: 45px 0 0 0;
+          width: 1440px;
+          margin: auto;
       
           li {
-            display: inline;
+            width: 14.2%;
+            float: left; 
+            text-align:center;
           }
       
           a {
@@ -58,23 +66,26 @@ header {
             padding: 1em;
             text-decoration: none;
             cursor: pointer;
+            width: 100%;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px; 
       
             &:hover {
               text-decoration: underline;
+              background-color: #fff;
+              color: #005095;
             }
           }
         }
-    
     }
-    
 
     .menu-content {
-        background-color: #f4f4f4;
-        width: 90%;
+        background-color: #ffff;
+        width: 1440px;
         margin: auto;
         border: rgb(201, 201, 201) 1px solid;
-        border-radius: 6px;
-        box-shadow: 0 0 5px 5px #eee;
+        border-radius: 4px;
+        box-shadow: rgb(0, 0, 0) 0px 4px 4px -4px;
 
         a {
           font-size: 18px;
@@ -133,10 +144,15 @@ header {
           .cta-block {
             border-right: solid 1px rgb(201, 201, 201);
             display: inline-flex;
-            width: 100%;
+            width: 99.9%;
             
             .col {
               padding: 1em;
+
+              h3 {
+                margin-top: 5px;
+                margin-bottom: 1.3em;
+              }
 
               Button {
                 width: 320px;
@@ -165,7 +181,7 @@ header {
                 margin-bottom: 8px;
             }
 
-        }
+          }
         }
 
     }

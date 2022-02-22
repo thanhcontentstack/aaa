@@ -3,6 +3,8 @@ import { VscSearch } from 'react-icons/vsc';
 import { IoMdArrowForward } from 'react-icons/io';
 import '../styles/ace-header.scss';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton'
+import closeIcon from '../assets/close-icon.svg'
 
 const requestHeaders: HeadersInit = new Headers();
 requestHeaders.set('api_key', `${process.env.REACT_APP_APIKEY}`);
@@ -15,6 +17,7 @@ interface IState {
     topMenu: ILink[],
     isLoading: false,
     joinButton: ILink,
+    registerButton: any;
     mainMenu: any[],
     menuContent: any,
     displayMenuContent: string,
@@ -38,6 +41,7 @@ export class AceHeader extends Component<IProps, IState> {
                 "title": "",
                 "href": ""
             },
+            registerButton: {},
             mainMenu: [],
             menuContent: {},
             displayMenuContent: "none",
@@ -62,7 +66,8 @@ export class AceHeader extends Component<IProps, IState> {
           let entry = response.entry;
 
           this.setState({
-            // joinButton: entry.join_button,
+            joinButton: entry.join_aaa_button,
+            registerButton: entry.register_log_in_cta,
             topMenu: entry.top_menu,
             mainMenu: entry.main_menu,
             // menuContent: entry.main_menu[0].menu,
@@ -118,20 +123,32 @@ export class AceHeader extends Component<IProps, IState> {
                                     <li key={i}><a href={menu.href}>{menu.title}</a></li>
                                 ))
                             }
+                            <li>
+                                <Button variant="outlined" sx={{ textTransform: 'none' }} disableElevation>{this.state.joinButton.title}</Button>
+                            </li>
+                            <li>
+                                <Button variant="contained" sx={{ textTransform: 'none' }} disableElevation>{this.state.registerButton.button?.title}</Button>
+                            </li>
                         </ul>
                     </div>
-                    <div className="main-menu">
+                    <nav className="main-menu">
                         <ul className="main-nav">
+                            {/* {
+                                this.state.mainMenu.map((menu: any, index) => (
+                                    <li key={index}><a href={menu.url} onClick={() => this.setMenuContent(menu.Menu_Item.menu_title.title)}
+                                        >{menu.Menu_Item.menu_title.title}</a></li>
+                                ))
+                            } */}
+
                             {
                                 this.state.mainMenu.map((menu: any, index) => (
                                     <li key={index}><a href={menu.url} onClick={() => this.setMenuContent(menu.Menu_Item.menu_title.title)}
-                                        // onMouseEnter={() => this.setMenuContent(menu.Menu_Item.menu_title.title)}
-                                        // onMouseOut={() => this.setState({displayMenuContent: "block"})}
                                         >{menu.Menu_Item.menu_title.title}</a></li>
                                 ))
                             }
+                 
                         </ul>
-                    </div>
+                    </nav>
                     <div className="menu-content" style={styles}>
                         <div className="left-col">
                             <div className="menu-title-block">
@@ -171,11 +188,11 @@ export class AceHeader extends Component<IProps, IState> {
                             </div>
                         </div>
                         <div className="right-col">
-                            <Button sx={{ textTransform: 'none' }} color="secondary" disableElevation variant="contained" className="close-btn" onClick={() => this.setState({displayMenuContent: "none"})}>Close</Button>
+                            <IconButton component="span" className="close-btn" onClick={() => this.setState({displayMenuContent: "none"})}><img src={closeIcon} alt="" /></IconButton>
                             {
                                 this.state.menuContent.side_menu ? this.state.menuContent.side_menu.map((menu: any) => (
                                     <div>
-                                         <h3>{menu.menu_title}</h3>
+                                        <h3>{menu.menu_title}</h3>
                                         <ul>
                                         {menu.link.map((item: any, index:number) => (
                                             <li key={index}>
