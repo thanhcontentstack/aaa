@@ -109,10 +109,17 @@ header {
             .col-links {
                 padding-right: 6em;
 
+                .menu-label {
+                  font-size: 18px;
+                  margin-bottom: .5em;
+                  display: inline-block;
+                }
+
                 ul {
                     list-style-type: none;
                     padding: 0;
                     margin: 0;
+                    margin-bottom: 1.2em;
                     
                     li {
                         margin-bottom: 8px;
@@ -130,6 +137,10 @@ header {
             
             .col {
               padding: 1em;
+
+              Button {
+                width: 320px;
+              }
             }
 
           }

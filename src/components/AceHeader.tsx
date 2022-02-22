@@ -147,7 +147,7 @@ export class AceHeader extends Component<IProps, IState> {
                                 {
                                     this.state.menuContent.menu_block ? this.state.menuContent.menu_block.map((menu: any, i:number) => (
                                         <div className="col-links" key={i}>
-                                            <h3>{menu.menu_title}</h3>
+                                            <span className="menu-label">{menu.menu_title}</span>
                                             <ul>
                                                 {menu.link.map((item: any, index:number) => (
                                                     <li key={index}>
@@ -166,12 +166,12 @@ export class AceHeader extends Component<IProps, IState> {
                                 </div>
                                 <div className="col">
                                     <h3>{this.state.menuContent.menu_description?.title}</h3>
-                                    <Button sx={{ textTransform: 'none' }} disableElevation variant="contained">{this.state.menuContent.menu_description?.cta_button.title}</Button>
+                                    <Button sx={{ textTransform: 'none' }} color="secondary" size="large" disableElevation variant="contained">{this.state.menuContent.menu_description?.cta_button.title}</Button>
                                 </div>
                             </div>
                         </div>
                         <div className="right-col">
-                            <Button sx={{ textTransform: 'none' }} disableElevation variant="contained" className="close-btn" onClick={() => this.setState({displayMenuContent: "none"})}>Close</Button>
+                            <Button sx={{ textTransform: 'none' }} color="secondary" disableElevation variant="contained" className="close-btn" onClick={() => this.setState({displayMenuContent: "none"})}>Close</Button>
                             {
                                 this.state.menuContent.side_menu ? this.state.menuContent.side_menu.map((menu: any) => (
                                     <div>

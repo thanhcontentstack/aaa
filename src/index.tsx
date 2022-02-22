@@ -3,9 +3,27 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const themeOptions = {
+  palette: {
+    type: 'light',
+    primary: {
+      main: '#005095',
+    }, 
+    secondary: {
+      main: '#4470bf',
+    },
+  },
+};
+
+const theme = createTheme(themeOptions);
 
 ReactDOM.render(
-    <App />,
+  <ThemeProvider theme={theme}>
+    <App />
+  </ThemeProvider>
+    ,
   document.getElementById('root')
 );
 
