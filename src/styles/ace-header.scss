@@ -1,0 +1,162 @@
+
+header {
+    position: relative;
+
+    .aaa-header__logo {
+        position: absolute;
+        width: 100px;
+        border-radius: 0 0 .25rem .25rem;
+        top: 0;
+        left: 10px;
+        z-index: 1;
+    }
+      
+      .top-navigation {
+        background-color: #005095;
+        height: 30px;
+      
+        ul.top-nav {
+          list-style-type: none;
+          margin: 0 1em 0 0;
+          padding: 3px 0 0 0;
+          float: right;
+      
+          li {
+            display: inline;
+          }
+      
+          a {
+            color: white;
+            padding: 14px;
+            text-decoration: none;
+      
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      
+      }
+      
+      .main-menu {
+        text-align: center;
+        padding: 8px;
+        position: relative;
+        background-color: #005095;
+      
+        ul.main-nav {
+          list-style-type: none;
+          padding: 0;
+      
+          li {
+            display: inline;
+          }
+      
+          a {
+            color: #fff;
+            font-weight: 600;
+            padding: 1em;
+            text-decoration: none;
+            cursor: pointer;
+      
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+    
+    }
+    
+
+    .menu-content {
+        background-color: #f4f4f4;
+        width: 90%;
+        margin: auto;
+        border: rgb(201, 201, 201) 1px solid;
+        border-radius: 6px;
+        box-shadow: 0 0 5px 5px #eee;
+
+        a {
+          font-size: 18px;
+          color: #4470bf;
+        }
+
+        .left-col {
+          width: 60%;
+          display: inline-block;
+
+          .menu-title-block {
+            border-right: solid 1px rgb(201, 201, 201);
+            padding: 1em;
+
+            .menu-title {
+              font-size: 22px;
+              font-weight: bold;
+            }
+
+            .menu-title-link {
+              margin-left: 16px;
+            }
+
+          }
+
+          .menu-links-block {
+            border-top: solid 1px rgb(201, 201, 201);
+            border-bottom: solid 1px rgb(201, 201, 201);
+            border-right: solid 1px rgb(201, 201, 201);
+            padding: 1em;
+
+            .col-links {
+                padding-right: 6em;
+
+                ul {
+                    list-style-type: none;
+                    padding: 0;
+                    margin: 0;
+                    
+                    li {
+                        margin-bottom: 8px;
+                    }
+
+                }
+            }
+
+          }
+
+          .cta-block {
+            border-right: solid 1px rgb(201, 201, 201);
+            display: inline-flex;
+            width: 100%;
+            
+            .col {
+              padding: 1em;
+            }
+
+          }
+
+        }
+
+        .right-col {
+          width: 37.2%;
+          float: right;
+          padding: 1em;
+
+          .close-btn {
+            float: right;
+          }
+
+          ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            
+            li {
+                margin-bottom: 8px;
+            }
+
+        }
+        }
+
+    }
+}
+

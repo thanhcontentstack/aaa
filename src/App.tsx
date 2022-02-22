@@ -3,16 +3,17 @@ import './App.scss';
 import Home from './pages/Home';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import AceHeader from './components/AceHeader';
 
 export class App extends Component {
   render() {
     return (
       <>
-        <div className="container">
-          <Header />
-          <Home />
-          <Footer />
-        </div>
+
+          <AceHeader />
+          {/* <Home />
+          <Footer /> */}
+
       </>
     )
   }
