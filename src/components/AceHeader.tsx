@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { VscSearch } from 'react-icons/vsc';
-import { IoMdArrowForward } from 'react-icons/io';
 import '../styles/ace-header.scss';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton'
@@ -21,7 +19,9 @@ interface IState {
     mainMenu: any[],
     menuContent: any,
     displayMenuContent: string,
-    logo: string
+    logo: string,
+    currentZipCode: string,
+    ref: any
 }
 
 interface ILink {
@@ -34,6 +34,10 @@ export class AceHeader extends Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
+        const windowUrl = window.location.search;
+        const params = new URLSearchParams(windowUrl);
+        const zipCode = params.get('zip') || '';
+
         this.state = {
             topMenu: [],
             isLoading: false,
@@ -45,7 +49,9 @@ export class AceHeader extends Component<IProps, IState> {
             mainMenu: [],
             menuContent: {},
             displayMenuContent: "none",
-            logo: ''
+            logo: '',
+            currentZipCode: zipCode,
+            ref:{}
         }
     }
 
@@ -101,8 +107,14 @@ export class AceHeader extends Component<IProps, IState> {
 
     }
 
+    trimWhiteSpacesAndLowercase(o: any) {
+        return JSON.parse(JSON.stringify(o).replace(/\s/g, "").toLowerCase());
+    }
+      
+
     componentDidMount() {
         this.getNavigationMenu();
+        // let x = React.ref
     }
 
     render() {
@@ -171,7 +183,7 @@ export class AceHeader extends Component<IProps, IState> {
                                                 <ul>
                                                     {menu.link.map((item: any, index:number) => (
                                                         <li key={index}>
-                                                            <a href={item.href}>{item.title}</a>
+                                                            <a ref={this.trimWhiteSpacesAndLowercase(item.title)} id={this.trimWhiteSpacesAndLowercase(item.title)} href={item.href}>{item.title}</a>
                                                         </li>
                                                     ))}
                                                 </ul>
