@@ -74,7 +74,7 @@ export class AceHeader extends Component<IProps, IState> {
             logo: response.entry.aaa_logo.url
           });
 
-        //   console.log(this.state.mainMenu);
+          console.log(this.state.mainMenu);
       
         } catch(error) {
         //   console.log(error);
@@ -95,9 +95,10 @@ export class AceHeader extends Component<IProps, IState> {
                     menuContent: menu.Menu_Item,
                     displayMenuContent: "block"
                 });
-                // console.log('got it', this.state.menuContent);
+                console.log('got it', this.state.menuContent);
             }
         });
+
     }
 
     componentDidMount() {
@@ -142,11 +143,12 @@ export class AceHeader extends Component<IProps, IState> {
 
                             {
                                 this.state.mainMenu.map((menu: any, index) => (
-                                    <li key={index}><a href={menu.url} onClick={() => this.setMenuContent(menu.Menu_Item.menu_title.title)}
-                                        >{menu.Menu_Item.menu_title.title}</a></li>
+                                    <li key={index}>
+                                        <a href={menu.url} onClick={() => this.setMenuContent(menu.Menu_Item.menu_title.title)}
+                                        >{menu.Menu_Item.menu_title.title}</a>
+                                    </li>
                                 ))
                             }
-                 
                         </ul>
                     </nav>
                     <div className="menu-content" style={styles}>
@@ -155,27 +157,63 @@ export class AceHeader extends Component<IProps, IState> {
                                 <span className="menu-title">{this.state.menuContent.menu_title?.title}</span>
                                 {
                                     this.state.menuContent.title_links ? this.state.menuContent.title_links.map((link:any, i:number) => (
-                                        <a href={link} className="menu-title-link">{link.title}</a>
+                                        <a key={i} href={link} className="menu-title-link">{link.title}</a>
                                     )) :
                                     <div />
                                 }
                             </div>
                             <div className="menu-links-block">
-                                {
-                                    this.state.menuContent.menu_block ? this.state.menuContent.menu_block.map((menu: any, i:number) => (
-                                        <div className="col-links" key={i}>
-                                            <span className="menu-label">{menu.menu_title}</span>
-                                            <ul>
-                                                {menu.link.map((item: any, index:number) => (
-                                                    <li key={index}>
-                                                        <a href={item.href}>{item.title}</a>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )) :
-                                    <div />
-                                }
+                                <div className="col-links">
+                                    {
+                                        this.state.menuContent.first_column_menu?.menu_block ? this.state.menuContent.first_column_menu.menu_block.map((menu: any, i:number) => (
+                                            <div className="col-links" key={i}>
+                                                <span className="menu-label">{menu.menu_title}</span>
+                                                <ul>
+                                                    {menu.link.map((item: any, index:number) => (
+                                                        <li key={index}>
+                                                            <a href={item.href}>{item.title}</a>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )) :
+                                        <div />
+                                    }
+                                </div>
+                                <div className="col-links">
+                                    {
+                                        this.state.menuContent.second_column_menu?.menu_block ? this.state.menuContent.second_column_menu.menu_block.map((menu: any, i:number) => (
+                                            <div className="col-links" key={i}>
+                                                <span className="menu-label">{menu.menu_title}</span>
+                                                <ul>
+                                                    {menu.link.map((item: any, index:number) => (
+                                                        <li key={index}>
+                                                            <a href={item.href}>{item.title}</a>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )) :
+                                        <div />
+                                    }
+                                </div>
+                                <div className="col-links">
+                                    {
+                                        this.state.menuContent.third_column_menu?.menu_block ? this.state.menuContent.third_column_menu.menu_block.map((menu: any, i:number) => (
+                                            <div className="col-links" key={i}>
+                                                <span className="menu-label">{menu.menu_title}</span>
+                                                <ul>
+                                                    {menu.link.map((item: any, index:number) => (
+                                                        <li key={index}>
+                                                            <a href={item.href}>{item.title}</a>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )) :
+                                        <div />
+                                    }
+                                </div>
                             </div>
                             <div className="cta-block">
                                 <div className="col">
@@ -190,8 +228,8 @@ export class AceHeader extends Component<IProps, IState> {
                         <div className="right-col">
                             <IconButton component="span" className="close-btn" onClick={() => this.setState({displayMenuContent: "none"})}><img src={closeIcon} alt="" /></IconButton>
                             {
-                                this.state.menuContent.side_menu ? this.state.menuContent.side_menu.map((menu: any) => (
-                                    <div>
+                                this.state.menuContent.side_menu ? this.state.menuContent.side_menu.map((menu:any, i:number) => (
+                                    <div key={i}>
                                         <h3>{menu.menu_title}</h3>
                                         <ul>
                                         {menu.link.map((item: any, index:number) => (

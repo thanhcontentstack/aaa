@@ -98,7 +98,7 @@ header {
 
           .menu-title-block {
             border-right: solid 1px rgb(201, 201, 201);
-            padding: 1em;
+            padding: 1em 1.5em 1em 1.5em;
 
             .menu-title {
               font-size: 22px;
@@ -115,10 +115,14 @@ header {
             border-top: solid 1px rgb(201, 201, 201);
             border-bottom: solid 1px rgb(201, 201, 201);
             border-right: solid 1px rgb(201, 201, 201);
-            padding: 1em;
+            padding: 2em 1.5em .5em 1.5em;
+            display: inline-flex;
+            float: left;
+            width: 94.4%;
 
             .col-links {
-                padding-right: 6em;
+                width: 277px;
+                // border: 1px solid #000;
 
                 .menu-label {
                   font-size: 18px;
@@ -147,7 +151,7 @@ header {
             width: 99.9%;
             
             .col {
-              padding: 1em;
+              padding: 1em 0em 1em 1.5em;
 
               h3 {
                 margin-top: 5px;
