@@ -25,7 +25,7 @@ interface ILink {
     href: string
 }
 
-export class Header extends Component<IProps, IState> {
+class Header extends Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);

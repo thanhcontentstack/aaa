@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import banner from '../assets/home-banner.png';
 import '../styles/home.scss';
 
-export class Home extends Component {
+class Home extends Component {
   render() {
     return (
       <>

@@ -21,7 +21,7 @@ interface IState {
     displayMenuContent: string,
     logo: string,
     currentZipCode: string,
-    ref: any
+    joinAAAButtonUrl: string
 }
 
 interface ILink {
@@ -29,7 +29,7 @@ interface ILink {
     href: string
 }
 
-export class AceHeader extends Component<IProps, IState> {
+class AceHeader extends Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
@@ -50,10 +50,14 @@ export class AceHeader extends Component<IProps, IState> {
             menuContent: {},
             displayMenuContent: "none",
             logo: '',
-            currentZipCode: zipCode,
-            ref:{}
+            currentZipCode: zipCode.replace(/^[0\.]+/, ""),
+            joinAAAButtonUrl: ''
         }
+
     }
+
+    linkRef = React.createRef<HTMLAnchorElement[]>();
+    accordionContent:any = [];
 
     async getNavigationMenu() {
         // console.log('get navigation menu');
@@ -68,7 +72,7 @@ export class AceHeader extends Component<IProps, IState> {
           })
       
           let response = await createGlobalField.json();
-          console.log(response.entry);
+        //   console.log(response.entry);
           let entry = response.entry;
 
           this.setState({
@@ -80,7 +84,7 @@ export class AceHeader extends Component<IProps, IState> {
             logo: response.entry.aaa_logo.url
           });
 
-          console.log(this.state.mainMenu);
+        //   console.log(this.state.mainMenu);
       
         } catch(error) {
         //   console.log(error);
@@ -110,11 +114,77 @@ export class AceHeader extends Component<IProps, IState> {
     trimWhiteSpacesAndLowercase(o: any) {
         return JSON.parse(JSON.stringify(o).replace(/\s/g, "").toLowerCase());
     }
-      
 
+    setRegion = new Promise<any>((resolve, reject) => {
+        console.log(this.state.currentZipCode);
+        if (this.state.currentZipCode > '90001' && this.state.currentZipCode < '96162') {
+            this.setState({
+                joinAAAButtonUrl: 'https://apps.calif.aaa.com/aceapps/membership/Join/SelectMembershipLevel?flowName=NewBiz'
+            })
+            resolve(true)
+        } else if (this.state.currentZipCode > '6001' && this.state.currentZipCode < '6389'
+                || this.state.currentZipCode > '6401' && this.state.currentZipCode < '6928'
+                || this.state.currentZipCode > '3901' && this.state.currentZipCode < '4992'
+                || this.state.currentZipCode > '1001' && this.state.currentZipCode < '2791'
+                || this.state.currentZipCode > '5501' && this.state.currentZipCode < '5544'
+                || this.state.currentZipCode > '3031' && this.state.currentZipCode < '3897'
+                || this.state.currentZipCode > '2801' && this.state.currentZipCode < '2940'
+                || this.state.currentZipCode > '2801' && this.state.currentZipCode < '5495'
+                || this.state.currentZipCode > '5601' && this.state.currentZipCode < '5907'
+        ) {
+            this.setState({
+                joinAAAButtonUrl: 'https://apps.northernnewengland.aaa.com/aceapps/membership/Join/SelectMembershipLevel?flowName=NewBiz'
+            })
+            resolve(true)
+        }
+        resolve(true)
+        reject()
+    })
+
+    setJoinBtn = () => {
+        this.accordionContent.forEach((element:any, index:any) => {
+            if (element.id === 'joinaaa') {
+                element.setAttribute("href", this.state.joinAAAButtonUrl)
+            }
+        });
+    }
+
+    async handleRegion() {
+        let setRegion = await new Promise<any>((resolve, reject) => {
+            console.log(this.state.currentZipCode);
+            if (this.state.currentZipCode >= '90001' && this.state.currentZipCode <= '96162') {
+                this.setState({
+                    joinAAAButtonUrl: 'https://apps.calif.aaa.com/aceapps/membership/Join/SelectMembershipLevel?flowName=NewBiz'
+                })
+                resolve(true)
+            } else if ((this.state.currentZipCode >= '6001' && this.state.currentZipCode <= '6389')
+                    || (this.state.currentZipCode >= '6401' && this.state.currentZipCode <= '6928')
+                    || (this.state.currentZipCode >= '3901' && this.state.currentZipCode <= '4992')
+                    || (this.state.currentZipCode >= '1001' && this.state.currentZipCode <= '2791')
+                    || (this.state.currentZipCode >= '5501' && this.state.currentZipCode <= '5544')
+                    || (this.state.currentZipCode >= '3031' && this.state.currentZipCode <= '3897')
+                    || (this.state.currentZipCode >= '2801' && this.state.currentZipCode <= '2940')
+                    || (this.state.currentZipCode >= '2801' && this.state.currentZipCode <= '5495')
+                    || (this.state.currentZipCode >= '5601' && this.state.currentZipCode <= '5907')
+            ) {
+                this.setState({
+                    joinAAAButtonUrl: 'https://apps.northernnewengland.aaa.com/aceapps/membership/Join/SelectMembershipLevel?flowName=NewBiz'
+                })
+                resolve(true)
+            }
+            reject()
+        });
+
+        console.log(setRegion);
+        this.setJoinBtn()
+    }
+      
     componentDidMount() {
         this.getNavigationMenu();
-        // let x = React.ref
+    }
+
+    componentDidUpdate() {
+        this.handleRegion()
     }
 
     render() {
@@ -180,10 +250,11 @@ export class AceHeader extends Component<IProps, IState> {
                                         this.state.menuContent.first_column_menu?.menu_block ? this.state.menuContent.first_column_menu.menu_block.map((menu: any, i:number) => (
                                             <div className="col-links" key={i}>
                                                 <span className="menu-label">{menu.menu_title}</span>
+                
                                                 <ul>
                                                     {menu.link.map((item: any, index:number) => (
                                                         <li key={index}>
-                                                            <a ref={this.trimWhiteSpacesAndLowercase(item.title)} id={this.trimWhiteSpacesAndLowercase(item.title)} href={item.href}>{item.title}</a>
+                                                            <a ref={linkRef => this.accordionContent[index] = linkRef} id={this.trimWhiteSpacesAndLowercase(item.title)} href={item.href}>{item.title}</a>
                                                         </li>
                                                     ))}
                                                 </ul>
