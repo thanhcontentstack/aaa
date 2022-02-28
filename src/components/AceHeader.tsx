@@ -21,7 +21,8 @@ interface IState {
     displayMenuContent: string,
     logo: string,
     currentZipCode: string,
-    joinAAAButtonUrl: string
+    joinAAAButtonUrl: string,
+    currentRegion: string
 }
 
 interface ILink {
@@ -51,13 +52,11 @@ class AceHeader extends Component<IProps, IState> {
             displayMenuContent: "none",
             logo: '',
             currentZipCode: zipCode.replace(/^[0\.]+/, ""),
-            joinAAAButtonUrl: ''
+            joinAAAButtonUrl: '',
+            currentRegion: ''
         }
 
     }
-
-    linkRef = React.createRef<HTMLAnchorElement[]>();
-    accordionContent:any = [];
 
     async getNavigationMenu() {
         // console.log('get navigation menu');
@@ -95,96 +94,43 @@ class AceHeader extends Component<IProps, IState> {
         
     }
 
-    setMenuContent = (event: string) => {
-
-
+    setMenuContent = (menuItem: string) => {
+        // console.log(this.state.mainMenu)
         this.state.mainMenu.forEach((menu: any) => {
-            if (menu.Menu_Item.menu_title.title === event) {
-
+            if (menu.Menu_Item.menu_title.title === menuItem) {
                 this.setState({
-                    menuContent: menu.Menu_Item,
+                    menuContent: menu,
                     displayMenuContent: "block"
                 });
-                console.log('got it', this.state.menuContent);
+                // console.log('got it', this.state.menuContent);
             }
         });
-
     }
 
-    trimWhiteSpacesAndLowercase(o: any) {
-        return JSON.parse(JSON.stringify(o).replace(/\s/g, "").toLowerCase());
-    }
-
-    setRegion = new Promise<any>((resolve, reject) => {
-        console.log(this.state.currentZipCode);
-        if (this.state.currentZipCode > '90001' && this.state.currentZipCode < '96162') {
+    async handleRegion(zipCode: string) {
+        if (zipCode >= '90001' && zipCode <= '96162') {
             this.setState({
-                joinAAAButtonUrl: 'https://apps.calif.aaa.com/aceapps/membership/Join/SelectMembershipLevel?flowName=NewBiz'
+                currentRegion: 'blt9f657eb8a467d3f1' // CA
             })
-            resolve(true)
-        } else if (this.state.currentZipCode > '6001' && this.state.currentZipCode < '6389'
-                || this.state.currentZipCode > '6401' && this.state.currentZipCode < '6928'
-                || this.state.currentZipCode > '3901' && this.state.currentZipCode < '4992'
-                || this.state.currentZipCode > '1001' && this.state.currentZipCode < '2791'
-                || this.state.currentZipCode > '5501' && this.state.currentZipCode < '5544'
-                || this.state.currentZipCode > '3031' && this.state.currentZipCode < '3897'
-                || this.state.currentZipCode > '2801' && this.state.currentZipCode < '2940'
-                || this.state.currentZipCode > '2801' && this.state.currentZipCode < '5495'
-                || this.state.currentZipCode > '5601' && this.state.currentZipCode < '5907'
+        } else if ((zipCode >= '6001' && zipCode <= '6389')
+                || (zipCode >= '6401' && zipCode <= '6928')
+                || (zipCode >= '3901' && zipCode <= '4992')
+                || (zipCode >= '1001' && zipCode <= '2791')
+                || (zipCode >= '5501' && zipCode <= '5544')
+                || (zipCode >= '3031' && zipCode <= '3897')
+                || (zipCode >= '2801' && zipCode <= '2940')
+                || (zipCode >= '2801' && zipCode <= '5495')
+                || (zipCode >= '5601' && zipCode <= '5907')
         ) {
             this.setState({
-                joinAAAButtonUrl: 'https://apps.northernnewengland.aaa.com/aceapps/membership/Join/SelectMembershipLevel?flowName=NewBiz'
+                currentRegion: 'blte2bed0dd4ea75102' // Northern England states
             })
-            resolve(true)
         }
-        resolve(true)
-        reject()
-    })
-
-    setJoinBtn = () => {
-        this.accordionContent.forEach((element:any, index:any) => {
-            if (element.id === 'joinaaa') {
-                element.setAttribute("href", this.state.joinAAAButtonUrl)
-            }
-        });
-    }
-
-    async handleRegion() {
-        let setRegion = await new Promise<any>((resolve, reject) => {
-            console.log(this.state.currentZipCode);
-            if (this.state.currentZipCode >= '90001' && this.state.currentZipCode <= '96162') {
-                this.setState({
-                    joinAAAButtonUrl: 'https://apps.calif.aaa.com/aceapps/membership/Join/SelectMembershipLevel?flowName=NewBiz'
-                })
-                resolve(true)
-            } else if ((this.state.currentZipCode >= '6001' && this.state.currentZipCode <= '6389')
-                    || (this.state.currentZipCode >= '6401' && this.state.currentZipCode <= '6928')
-                    || (this.state.currentZipCode >= '3901' && this.state.currentZipCode <= '4992')
-                    || (this.state.currentZipCode >= '1001' && this.state.currentZipCode <= '2791')
-                    || (this.state.currentZipCode >= '5501' && this.state.currentZipCode <= '5544')
-                    || (this.state.currentZipCode >= '3031' && this.state.currentZipCode <= '3897')
-                    || (this.state.currentZipCode >= '2801' && this.state.currentZipCode <= '2940')
-                    || (this.state.currentZipCode >= '2801' && this.state.currentZipCode <= '5495')
-                    || (this.state.currentZipCode >= '5601' && this.state.currentZipCode <= '5907')
-            ) {
-                this.setState({
-                    joinAAAButtonUrl: 'https://apps.northernnewengland.aaa.com/aceapps/membership/Join/SelectMembershipLevel?flowName=NewBiz'
-                })
-                resolve(true)
-            }
-            reject()
-        });
-
-        console.log(setRegion);
-        this.setJoinBtn()
-    }
-      
+    };
+          
     componentDidMount() {
         this.getNavigationMenu();
-    }
-
-    componentDidUpdate() {
-        this.handleRegion()
+        this.handleRegion(this.state.currentZipCode)
     }
 
     render() {
@@ -216,13 +162,6 @@ class AceHeader extends Component<IProps, IState> {
                     </div>
                     <nav className="main-menu">
                         <ul className="main-nav">
-                            {/* {
-                                this.state.mainMenu.map((menu: any, index) => (
-                                    <li key={index}><a href={menu.url} onClick={() => this.setMenuContent(menu.Menu_Item.menu_title.title)}
-                                        >{menu.Menu_Item.menu_title.title}</a></li>
-                                ))
-                            } */}
-
                             {
                                 this.state.mainMenu.map((menu: any, index) => (
                                     <li key={index}>
@@ -236,9 +175,9 @@ class AceHeader extends Component<IProps, IState> {
                     <div className="menu-content" style={styles}>
                         <div className="left-col">
                             <div className="menu-title-block">
-                                <span className="menu-title">{this.state.menuContent.menu_title?.title}</span>
+                                <span className="menu-title">{this.state.menuContent.Menu_Item?.menu_title.title}</span>
                                 {
-                                    this.state.menuContent.title_links ? this.state.menuContent.title_links.map((link:any, i:number) => (
+                                    this.state.menuContent.Menu_Item?.title_links ? this.state.menuContent.Menu_Item?.title_links.map((link:any, i:number) => (
                                         <a key={i} href={link} className="menu-title-link">{link.title}</a>
                                     )) :
                                     <div />
@@ -247,16 +186,31 @@ class AceHeader extends Component<IProps, IState> {
                             <div className="menu-links-block">
                                 <div className="col-links">
                                     {
-                                        this.state.menuContent.first_column_menu?.menu_block ? this.state.menuContent.first_column_menu.menu_block.map((menu: any, i:number) => (
+                                        this.state.menuContent.Menu_Item?.first_column_menu_v2?.menu_block ? this.state.menuContent.Menu_Item?.first_column_menu_v2.menu_block.map((menu: any, i:number) => (
                                             <div className="col-links" key={i}>
                                                 <span className="menu-label">{menu.menu_title}</span>
-                
                                                 <ul>
-                                                    {menu.link.map((item: any, index:number) => (
-                                                        <li key={index}>
-                                                            <a ref={linkRef => this.accordionContent[index] = linkRef} id={this.trimWhiteSpacesAndLowercase(item.title)} href={item.href}>{item.title}</a>
-                                                        </li>
-                                                    ))}
+                                                    {menu.links.map((link: any, index:number) => {
+                                                        return link
+                                                            ?
+                                                            <li key={index}>
+                                                                {
+                                                                    link.link.map((item: any, index:number) => {
+                                                                        // console.log(item);
+                                                                        if (item.region.length > 0 && item.region[0].uid === this.state.currentRegion) 
+                                                                            return <a key={index} href={item.url}>{link.menu_title}</a>
+
+                                                                        if (item.region.length === 0) 
+                                                                            return <a key={index} href={item.url}>{link.menu_title}</a>
+                                                                                                                                            
+                                                                    })
+
+                                                                }
+                                                            </li> 
+                                                            :
+                                                            null
+                                                        }
+                                                    )}
                                                 </ul>
                                             </div>
                                         )) :
@@ -265,7 +219,7 @@ class AceHeader extends Component<IProps, IState> {
                                 </div>
                                 <div className="col-links">
                                     {
-                                        this.state.menuContent.second_column_menu?.menu_block ? this.state.menuContent.second_column_menu.menu_block.map((menu: any, i:number) => (
+                                        this.state.menuContent.Menu_Item?.second_column_menu.menu_block ? this.state.menuContent.Menu_Item?.second_column_menu.menu_block.map((menu: any, i:number) => (
                                             <div className="col-links" key={i}>
                                                 <span className="menu-label">{menu.menu_title}</span>
                                                 <ul>
@@ -282,7 +236,7 @@ class AceHeader extends Component<IProps, IState> {
                                 </div>
                                 <div className="col-links">
                                     {
-                                        this.state.menuContent.third_column_menu?.menu_block ? this.state.menuContent.third_column_menu.menu_block.map((menu: any, i:number) => (
+                                        this.state.menuContent.Menu_Item?.third_column_menu.menu_block ? this.state.menuContent.Menu_Item?.third_column_menu.menu_block.map((menu: any, i:number) => (
                                             <div className="col-links" key={i}>
                                                 <span className="menu-label">{menu.menu_title}</span>
                                                 <ul>
@@ -300,18 +254,18 @@ class AceHeader extends Component<IProps, IState> {
                             </div>
                             <div className="cta-block">
                                 <div className="col">
-                                    <img src={this.state.menuContent.menu_description?.image[0]?.url}  alt="" />
+                                    <img src={this.state.menuContent.Menu_Item?.menu_description.image[0]?.url}  alt="" />
                                 </div>
                                 <div className="col">
-                                    <h3>{this.state.menuContent.menu_description?.title}</h3>
-                                    <Button sx={{ textTransform: 'none' }} color="secondary" size="large" disableElevation variant="contained">{this.state.menuContent.menu_description?.cta_button.title}</Button>
+                                    <h3>{this.state.menuContent.Menu_Item?.menu_description.title}</h3>
+                                    <Button sx={{ textTransform: 'none' }} color="secondary" size="large" disableElevation variant="contained">{this.state.menuContent.Menu_Item?.menu_description.cta_button.title}</Button>
                                 </div>
                             </div>
                         </div>
                         <div className="right-col">
                             <IconButton component="span" className="close-btn" onClick={() => this.setState({displayMenuContent: "none"})}><img src={closeIcon} alt="" /></IconButton>
                             {
-                                this.state.menuContent.side_menu ? this.state.menuContent.side_menu.map((menu:any, i:number) => (
+                                this.state.menuContent.Menu_Item?.side_menu ? this.state.menuContent.Menu_Item?.side_menu.map((menu:any, i:number) => (
                                     <div key={i}>
                                         <h3>{menu.menu_title}</h3>
                                         <ul>
