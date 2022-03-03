@@ -55,15 +55,12 @@ class AceHeader extends Component<IProps, IState> {
             joinAAAButtonUrl: '',
             currentRegion: ''
         }
-
     }
 
     async getNavigationMenu() {
-        // console.log('get navigation menu');
         let contentTypeUid = 'ace_navigation_menu';
         let entryUid = 'blt1bcec684a6ddcf9a';
-    
-        let url = `https://cdn.contentstack.io/v3/content_types/${contentTypeUid}/entries/${entryUid}?environment=${process.env.REACT_APP_ENVIRONMENT}`;
+        let url = `${process.env.REACT_APP_CDN_API_URL}/content_types/${contentTypeUid}/entries/${entryUid}?environment=${process.env.REACT_APP_ENVIRONMENT}`;
     
         try {
           let createGlobalField = await fetch(url, {
@@ -71,27 +68,23 @@ class AceHeader extends Component<IProps, IState> {
           })
       
           let response = await createGlobalField.json();
-        //   console.log(response.entry);
           let entry = response.entry;
 
           this.setState({
             joinButton: entry.join_aaa_button,
             registerButton: entry.register_log_in_cta,
-            topMenu: entry.top_menu,
+            topMenu: entry.top_navigation_menu,
             mainMenu: entry.main_menu,
-            // menuContent: entry.main_menu[0].menu,
             logo: response.entry.aaa_logo.url
           });
-
-        //   console.log(this.state.mainMenu);
       
         } catch(error) {
         //   console.log(error);
-          this.setState({
-            isLoading: false,
-          })
+        } finally {
+            this.setState({
+                isLoading: false,
+            })
         }
-        
     }
 
     setMenuContent = (menuItem: string) => {
@@ -102,7 +95,6 @@ class AceHeader extends Component<IProps, IState> {
                     menuContent: menu,
                     displayMenuContent: "block"
                 });
-                // console.log('got it', this.state.menuContent);
             }
         });
     }
@@ -127,6 +119,10 @@ class AceHeader extends Component<IProps, IState> {
             })
         }
     };
+
+    handleRegistration = () => {
+        alert('Register!');
+    }
           
     componentDidMount() {
         this.getNavigationMenu();
@@ -141,22 +137,41 @@ class AceHeader extends Component<IProps, IState> {
         
         return (
             <div>
-                <header className="">
+                <header>
                     <a className="aaa-header__logo" href="/" data-trk="MainNavLogo" aria-label="AAA Logo, Home Page">
                         <img src={this.state.logo} alt="AAA Logo" />
                     </a>
+                    <input className="search-menu" type="text" placeholder='Search'/>
                     <div className="top-navigation">
                         <ul className="top-nav">
                             {
-                                this.state.topMenu.map((menu: ILink, i) => (
-                                    <li key={i}><a href={menu.href}>{menu.title}</a></li>
+                                this.state.topMenu.map((menu: any, i) => (
+                                    <li key={i}>
+                                        <a href={menu.top_menu.href}>
+                                        {
+                                            menu.icon?.url 
+                                            ?
+                                            <img className="menu-icon" src={menu.icon?.url} alt="AAA Logo" />
+                                            :
+                                            null
+                                        }
+                                        {menu.top_menu.title}
+                                        </a>
+                                    </li>
                                 ))
                             }
                             <li>
                                 <Button variant="outlined" sx={{ textTransform: 'none' }} disableElevation>{this.state.joinButton.title}</Button>
                             </li>
                             <li>
-                                <Button variant="contained" sx={{ textTransform: 'none' }} disableElevation>{this.state.registerButton.button?.title}</Button>
+                                <select className="register-btn" onChange={this.handleRegistration}>
+                                    <option selected disabled>{this.state.registerButton.button?.title}</option>
+                                    {
+                                        this.state.registerButton.select_option_value?.map((option: string, index: number) => {
+                                            return <option key={index}>{option}</option>
+                                        })
+                                    }
+                                </select>
                             </li>
                         </ul>
                     </div>
@@ -166,7 +181,15 @@ class AceHeader extends Component<IProps, IState> {
                                 this.state.mainMenu.map((menu: any, index) => (
                                     <li key={index}>
                                         <a href={menu.url} onClick={() => this.setMenuContent(menu.Menu_Item.menu_title.title)}
-                                        >{menu.Menu_Item.menu_title.title}</a>
+                                        >{menu.Menu_Item.menu_title.title} 
+                                        {
+                                            menu.Menu_Item.menu_icon?.url
+                                            ?
+                                            <img className="menu-icon" src={menu.Menu_Item.menu_icon?.url} alt="AAA Logo" />
+                                            :
+                                            null
+                                        }
+                                        </a>
                                     </li>
                                 ))
                             }
@@ -186,7 +209,7 @@ class AceHeader extends Component<IProps, IState> {
                             <div className="menu-links-block">
                                 <div className="col-links">
                                     {
-                                        this.state.menuContent.Menu_Item?.first_column_menu_v2?.menu_block ? this.state.menuContent.Menu_Item?.first_column_menu_v2.menu_block.map((menu: any, i:number) => (
+                                        this.state.menuContent.Menu_Item?.first_column_menu ? this.state.menuContent.Menu_Item?.first_column_menu.menu_block.map((menu: any, i:number) => (
                                             <div className="col-links" key={i}>
                                                 <span className="menu-label">{menu.menu_title}</span>
                                                 <ul>
@@ -196,7 +219,6 @@ class AceHeader extends Component<IProps, IState> {
                                                             <li key={index}>
                                                                 {
                                                                     link.link.map((item: any, index:number) => {
-                                                                        // console.log(item);
                                                                         if (item.region.length > 0 && item.region[0].uid === this.state.currentRegion) 
                                                                             return <a key={index} href={item.url}>{link.menu_title}</a>
 
@@ -204,7 +226,6 @@ class AceHeader extends Component<IProps, IState> {
                                                                             return <a key={index} href={item.url}>{link.menu_title}</a>
                                                                                                                                             
                                                                     })
-
                                                                 }
                                                             </li> 
                                                             :
@@ -218,38 +239,66 @@ class AceHeader extends Component<IProps, IState> {
                                     }
                                 </div>
                                 <div className="col-links">
-                                    {
-                                        this.state.menuContent.Menu_Item?.second_column_menu.menu_block ? this.state.menuContent.Menu_Item?.second_column_menu.menu_block.map((menu: any, i:number) => (
-                                            <div className="col-links" key={i}>
-                                                <span className="menu-label">{menu.menu_title}</span>
-                                                <ul>
-                                                    {menu.link.map((item: any, index:number) => (
+                                {
+                                    this.state.menuContent.Menu_Item?.second_column_menu ? this.state.menuContent.Menu_Item?.second_column_menu.menu_block.map((menu: any, i:number) => (
+                                        <div className="col-links" key={i}>
+                                            <span className="menu-label">{menu.menu_title}</span>
+                                            <ul>
+                                                {menu.links.map((link: any, index:number) => {
+                                                    return link
+                                                        ?
                                                         <li key={index}>
-                                                            <a href={item.href}>{item.title}</a>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )) :
-                                        <div />
-                                    }
+                                                            {
+                                                                link.link.map((item: any, index:number) => {
+                                                                    // console.log(item);
+                                                                    if (item.region.length > 0 && item.region[0].uid === this.state.currentRegion) 
+                                                                        return <a key={index} href={item.url}>{link.menu_title}</a>
+
+                                                                    if (item.region.length === 0) 
+                                                                        return <a key={index} href={item.url}>{link.menu_title}</a>
+                                                                })
+                                                            }
+                                                        </li> 
+                                                        :
+                                                        null
+                                                    }
+                                                )}
+                                            </ul>
+                                        </div>
+                                    )) :
+                                    <div />
+                                }
                                 </div>
                                 <div className="col-links">
-                                    {
-                                        this.state.menuContent.Menu_Item?.third_column_menu.menu_block ? this.state.menuContent.Menu_Item?.third_column_menu.menu_block.map((menu: any, i:number) => (
-                                            <div className="col-links" key={i}>
-                                                <span className="menu-label">{menu.menu_title}</span>
-                                                <ul>
-                                                    {menu.link.map((item: any, index:number) => (
+                                {
+                                    this.state.menuContent.Menu_Item?.third_column_menu ? this.state.menuContent.Menu_Item?.third_column_menu.menu_block.map((menu: any, i:number) => (
+                                        <div className="col-links" key={i}>
+                                            <span className="menu-label">{menu.menu_title}</span>
+                                            <ul>
+                                                {menu.links.map((link: any, index:number) => {
+                                                    return link
+                                                        ?
                                                         <li key={index}>
-                                                            <a href={item.href}>{item.title}</a>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )) :
-                                        <div />
-                                    }
+                                                            {
+                                                                link.link.map((item: any, index:number) => {
+                                                                    // console.log(item);
+                                                                    if (item.region.length > 0 && item.region[0].uid === this.state.currentRegion) 
+                                                                        return <a key={index} href={item.url}>{link.menu_title}</a>
+
+                                                                    if (item.region.length === 0) 
+                                                                        return <a key={index} href={item.url}>{link.menu_title}</a>
+                                                                })
+                                                            }
+                                                        </li> 
+                                                        :
+                                                        null
+                                                    }
+                                                )}
+                                            </ul>
+                                        </div>
+                                    )) :
+                                    <div />
+                                }
                                 </div>
                             </div>
                             <div className="cta-block">

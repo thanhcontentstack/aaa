@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import './App.scss';
 import Home from './pages/Home';
 import Footer from './components/Footer';
-import Header from './components/Header';
 import AceHeader from './components/AceHeader';
 
 export class App extends Component {
@@ -10,8 +9,8 @@ export class App extends Component {
     return (
       <>
           <AceHeader />
-          {/* <Home />
-          <Footer /> */}
+          <Home />
+          {/* <Footer /> */}
       </>
     )
   }
