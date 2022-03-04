@@ -63,11 +63,11 @@ class AceHeader extends Component<IProps, IState> {
         let url = `${process.env.REACT_APP_CDN_API_URL}/content_types/${contentTypeUid}/entries/${entryUid}?environment=${process.env.REACT_APP_ENVIRONMENT}`;
     
         try {
-          let createGlobalField = await fetch(url, {
+          let createNavigationMenu = await fetch(url, {
             headers: requestHeaders,
           })
       
-          let response = await createGlobalField.json();
+          let response = await createNavigationMenu.json();
           let entry = response.entry;
 
           this.setState({
