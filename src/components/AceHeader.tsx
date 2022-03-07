@@ -164,14 +164,14 @@ class AceHeader extends Component<IProps, IState> {
                                 <Button variant="outlined" sx={{ textTransform: 'none' }} disableElevation>{this.state.joinButton.title}</Button>
                             </li>
                             <li>
-                                <select className="register-btn" onChange={this.handleRegistration}>
+                                {/* <select className="register-btn" onChange={this.handleRegistration}>
                                     <option selected disabled>{this.state.registerButton.button?.title}</option>
                                     {
                                         this.state.registerButton.select_option_value?.map((option: string, index: number) => {
                                             return <option key={index}>{option}</option>
                                         })
                                     }
-                                </select>
+                                </select> */}
                             </li>
                         </ul>
                     </div>
