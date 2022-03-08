@@ -1,9 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import * as ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 
 const themeOptions = {
   palette: {
@@ -21,7 +22,10 @@ const theme = createTheme(themeOptions);
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
+    <BrowserRouter>
     <App />
+    </BrowserRouter>
+    
   </ThemeProvider>
     ,
   document.getElementById('root')

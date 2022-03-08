@@ -3,6 +3,7 @@ import '../styles/ace-header.scss';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton'
 import closeIcon from '../assets/close-icon.svg'
+import { Link } from "react-router-dom";
 
 const requestHeaders: HeadersInit = new Headers();
 requestHeaders.set('api_key', `${process.env.REACT_APP_APIKEY}`);
@@ -147,7 +148,7 @@ class AceHeader extends Component<IProps, IState> {
                             {
                                 this.state.topMenu.map((menu: any, i) => (
                                     <li key={i}>
-                                        <a href={menu.top_menu.href}>
+                                        <Link to={menu.top_menu.href}>
                                         {
                                             menu.icon?.url 
                                             ?
@@ -156,7 +157,7 @@ class AceHeader extends Component<IProps, IState> {
                                             null
                                         }
                                         {menu.top_menu.title}
-                                        </a>
+                                        </Link>
                                     </li>
                                 ))
                             }
@@ -164,14 +165,14 @@ class AceHeader extends Component<IProps, IState> {
                                 <Button variant="outlined" sx={{ textTransform: 'none' }} disableElevation>{this.state.joinButton.title}</Button>
                             </li>
                             <li>
-                                <select className="register-btn" onChange={this.handleRegistration}>
+                                {/* <select className="register-btn" onChange={this.handleRegistration}>
                                     <option selected disabled>{this.state.registerButton.button?.title}</option>
                                     {
                                         this.state.registerButton.select_option_value?.map((option: string, index: number) => {
                                             return <option key={index}>{option}</option>
                                         })
                                     }
-                                </select>
+                                </select> */}
                             </li>
                         </ul>
                     </div>

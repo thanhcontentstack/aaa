@@ -7,6 +7,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import Box from '@mui/material/Box';
 
 const stackInstance = Contentstack.Stack({ 
   "api_key": `${process.env.REACT_APP_APIKEY}`, 
@@ -89,8 +90,8 @@ export class CardMUI extends Component<IProps, IState> {
           {this.state.card 
           ?  
           this.state.card.map((res: any, index: number) => (
-            <Grid item xs={4}>
-              <Card key={index}>
+            <Grid key={index} item xs={4}>
+              <Card>
                 <CardMedia
                   component="img"
                   height="160"
@@ -109,6 +110,41 @@ export class CardMUI extends Component<IProps, IState> {
                   <Button color="secondary" size="small">{res.cta.title}</Button>
                 </CardActions>
               </Card>
+            </Grid>
+          )) 
+          :
+          <div>Not available</div>
+         }
+      </Grid>
+
+         <br />
+      <Grid container spacing={2}>
+          {this.state.card 
+          ?  
+          this.state.card.map((res: any, index: number) => (
+            <Grid key={index} item xs={4}>
+              <Card sx={{ display: 'flex' }}>
+              <CardMedia
+                    component="img"
+                    sx={{ width: 151 }}
+                    image={res.image.url}
+                    alt="Live from space album cover"
+                  />
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <CardContent sx={{ flex: '1 0 auto' }}>
+                      <Typography component="div" variant="h5">
+                      {res.title}
+                      </Typography>
+                      <Typography variant="subtitle1" color="text.secondary" component="div">
+                      {res.description}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                  <Button color="secondary" size="small">{res.cta.title}</Button>
+                </CardActions>
+                  </Box>
+
+                </Card>
             </Grid>
           )) 
           :

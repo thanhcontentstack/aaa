@@ -17,12 +17,12 @@ export class App extends Component {
       <>
           <AceHeader />
           <div className="container">
-          <Router>
+
             <Routes>
               <Route path='/' element={<Home />}/>
-              <Route path='/material-ui' element={<MaterialUI />}/>
+              <Route path='material-ui' element={<MaterialUI />}/>
             </Routes>
-          </Router>
+ 
           </div>
 
 
