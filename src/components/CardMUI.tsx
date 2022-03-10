@@ -2,28 +2,20 @@ import React, { Component } from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button'
-import Contentstack from 'contentstack';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Box from '@mui/material/Box';
 
-const stackInstance = Contentstack.Stack({ 
-  "api_key": `${process.env.REACT_APP_APIKEY}`, 
-  "delivery_token": `${process.env.REACT_APP_DELIVERY_TOKEN}`, 
-  "environment": `${process.env.REACT_APP_ENVIRONMENT}`
-});
-
 interface IProps {
+  cardFeature: {
+    title: string,
+    item: ICard[]
+  }
 }
 
-interface IState {
-  cardTitle: string;
-  card: any
-}
-
-interface ICard {
+export interface ICard {
   title: string,
   description: string,
   image: string,
@@ -38,58 +30,20 @@ interface ILink {
   href: string
 }
 
-export class CardMUI extends Component<IProps, IState> {
-
-  constructor(props: IProps) {
-    super(props);
-
-    this.state = {
-      cardTitle: '',
-      card: [
-        {
-          title: '',
-          description: '',
-          image: '',
-          cta: {
-            title: '',
-            href: ''
-          },
-          _metadata: {
-            uid: ''
-          }
-        }
-      ]
-    }
-  }
-
-  fetchCard = () => {
-    let entryUID = 'blt9150790ae2804f60';
-    let contentTypeUID = 'card';
-    let query = stackInstance.ContentType(contentTypeUID).Entry(entryUID)
-    .includeReference(['components.feature.item'])
-    .toJSON().fetch();
-    query.then((res: any) => {
-
-      this.setState({
-        cardTitle: res.components[1].feature.title,
-        card: res.components[1].feature.item
-      })
-      console.log(this.state.card);
-    })
-  }
+export class CardMUI extends Component<IProps> {
 
   componentDidMount() {
-    this.fetchCard();
+    console.log(this.props.cardFeature);
   }
 
   render() {
     return (
       <div className="card-wrapper">
-        <h3>{this.state.cardTitle}</h3>  
+        <h3>{this.props.cardFeature.title}</h3>  
         <Grid container spacing={2}>
-          {this.state.card 
+          {this.props.cardFeature
           ?  
-          this.state.card.map((res: any, index: number) => (
+          this.props.cardFeature.item.map((res: any, index: number) => (
             <Grid key={index} item xs={4}>
               <Card>
                 <CardMedia
@@ -119,9 +73,9 @@ export class CardMUI extends Component<IProps, IState> {
 
          <br />
       <Grid container spacing={2}>
-          {this.state.card 
+          {this.props.cardFeature
           ?  
-          this.state.card.map((res: any, index: number) => (
+          this.props.cardFeature.item.map((res: any, index: number) => (
             <Grid key={index} item xs={4}>
               <Card sx={{ display: 'flex' }}>
               <CardMedia

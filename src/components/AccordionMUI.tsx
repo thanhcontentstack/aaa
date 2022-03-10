@@ -6,39 +6,15 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button'
-import Contentstack from 'contentstack';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-
-const stackInstance = Contentstack.Stack({ 
-  "api_key": `${process.env.REACT_APP_APIKEY}`, 
-  "delivery_token": `${process.env.REACT_APP_DELIVERY_TOKEN}`, 
-  "environment": `${process.env.REACT_APP_ENVIRONMENT}`
-});
 
 interface IProps {
-}
-
-interface IState {
-  accordionTitle: string;
-  accordion: IAcccordion[],
-  cardTitle: string;
-  card: any
-}
-
-interface ICard {
-  title: string,
-  description: string,
-  image: string,
-  cta: ILink
-  _metadata: {
-    uid: string
+  accordionFeature: {
+    title: string,
+    item: IAccordion[]
   }
 }
 
-interface IAcccordion {
+export interface IAccordion {
   title: string,
   description: string,
   cta: ILink
@@ -52,69 +28,16 @@ interface ILink {
   href: string
 }
 
-export class AccordionMUI extends Component<IProps, IState> {
-
-  constructor(props: IProps) {
-    super(props);
-
-    this.state = {
-      accordionTitle: '',
-      accordion: [
-        {
-          title: '',
-          description: '',
-          cta: {
-            title: '',
-            href: ''
-          },
-          _metadata: {
-            uid: ''
-          }
-        }
-      ],
-      cardTitle: '',
-      card: [
-        {
-          title: '',
-          description: '',
-          image: '',
-          cta: {
-            title: '',
-            href: ''
-          },
-          _metadata: {
-            uid: ''
-          }
-        }
-      ]
-    }
-  }
-
-  fetchAccordion = () => {
-    let entryUID = 'blt61bc661c3de79e9f';
-    let contentTypeUID = 'accordion';
-    let query = stackInstance.ContentType(contentTypeUID).Entry(entryUID).toJSON().fetch();
-    query.then((res: any) => {
-      // console.log(res.items);
-      this.setState({
-        accordionTitle: res.title,
-        accordion: res.items
-      })
-    })
-  }
-
-  componentDidMount() {
-    this.fetchAccordion();
-  }
+export class AccordionMUI extends Component<IProps> {
 
   render() {
     return (
       <div className="accordion-wrapper">
-        <h3>{this.state.accordionTitle}</h3>  
+        <h3>{this.props.accordionFeature.title}</h3>  
         <Grid>
           <Grid item xs={4}>
             {
-              this.state.accordion.map((res: IAcccordion, index: number) => (
+              this.props.accordionFeature.item.map((res: IAccordion, index: number) => (
                 <Accordion key={index}>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
