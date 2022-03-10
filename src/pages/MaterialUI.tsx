@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { AccordionMUI, IAccordion } from './../components/AccordionMUI';
-import { CardMUI, ICard } from './../components/CardMUI';
+import { CardMUI, ICard, ICardFeature } from './../components/CardMUI';
 import '../styles/material-ui.scss'
 import Contentstack from 'contentstack';
 
@@ -18,10 +18,7 @@ interface IState {
     title: string,
     item: IAccordion[]
   },
-  cardFeature: {
-    title: string,
-    item: ICard[]
-  }
+  cardFeature: ICardFeature
 }
 
 export class MaterialUI extends Component<IProps, IState> {
@@ -48,6 +45,9 @@ export class MaterialUI extends Component<IProps, IState> {
       },
       cardFeature: {
         title: '',
+        align_image_left: false,
+        background_color: '',
+        is_button_outlined: false,
         item: [
           {
             title: '',
@@ -78,7 +78,7 @@ export class MaterialUI extends Component<IProps, IState> {
         accordionFeature: res.components[0].accordion_feature,
         cardFeature: res.components[1].card_feature
       })
-      console.log(this.state.cardFeature);
+      // console.log(this.state.cardFeature);
     })
   }
 
