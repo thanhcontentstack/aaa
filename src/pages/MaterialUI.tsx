@@ -3,12 +3,21 @@ import { AccordionMUI, IAccordion } from './../components/AccordionMUI';
 import { CardMUI, ICard, ICardFeature } from './../components/CardMUI';
 import '../styles/material-ui.scss'
 import Contentstack from 'contentstack';
+import ContentstackLivePreview from "@contentstack/live-preview-utils";
+import { addEditableTags } from "@contentstack/utils";
 
-const stackInstance = Contentstack.Stack({ 
-  "api_key": `${process.env.REACT_APP_APIKEY}`, 
-  "delivery_token": `${process.env.REACT_APP_DELIVERY_TOKEN}`, 
-  "environment": `${process.env.REACT_APP_ENVIRONMENT}`
+const stackInstance: any = Contentstack.Stack({ 
+  api_key: `${process.env.REACT_APP_APIKEY}`, 
+  delivery_token: `${process.env.REACT_APP_DELIVERY_TOKEN}`, 
+  environment: `${process.env.REACT_APP_ENVIRONMENT}`,
+  live_preview: {
+    management_token: `${process.env.REACT_APP_LIVE_PREVIEW_CMA_TOKEN}`,
+    enable: true,
+    host: 'api.contentstack.io'
+  }
 });
+
+stackInstance.setHost("api.contentstack.io");
 
 interface IProps {
 }
@@ -18,6 +27,7 @@ interface IState {
     title: string,
     item: IAccordion[]
   },
+  // accordionFeature: any,
   cardFeature: ICardFeature
 }
 
@@ -74,6 +84,7 @@ export class MaterialUI extends Component<IProps, IState> {
     .toJSON().fetch();
     query.then((res: any) => {
       // console.log(res)
+      addEditableTags(res, "Material_Page", true, 'en-us');
       this.setState({
         accordionFeature: res.components[0].accordion_feature,
         cardFeature: res.components[1].card_feature
@@ -84,6 +95,14 @@ export class MaterialUI extends Component<IProps, IState> {
 
   componentDidMount() {
     this.fetchEntry();
+    ContentstackLivePreview.init({enable: true, stackSdk: stackInstance, ssr:false, stackDetails: {
+      apiKey: process.env.REACT_APP_APIKEY,
+    },
+    clientUrlParams: {
+        protocol: "https",
+        host: "app.contentstack.com",
+        port: 443,
+    }});
   }
 
   render() {

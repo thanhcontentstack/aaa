@@ -9,7 +9,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Box from '@mui/material/Box';
 
 interface IProps {
-  cardFeature: ICardFeature
+  cardFeature: any
 }
 
 export interface ICardFeature {
@@ -38,7 +38,7 @@ interface ILink {
 export class CardMUI extends Component<IProps> {
 
   componentDidMount() {
-    console.log(this.props.cardFeature);
+    // console.log(this.props.cardFeature);
   }
 
   render() {
@@ -95,18 +95,17 @@ export class CardMUI extends Component<IProps> {
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography component="div" variant="h5">
+                <Typography component="div" variant="h5" {...res.$?.title}>
                 {res.title}
                 </Typography>
-                <Typography variant="subtitle1" color="text.secondary" component="div">
+                <Typography variant="subtitle1" color="text.secondary" component="div" {...res.$?.description}>
                 {res.description}
                 </Typography>
               </CardContent>
               <CardActions>
-            <Button color="secondary" size="small">{res.cta.title}</Button>
-          </CardActions>
+                <Button color="secondary" size="small" {...res.cta.$?.title}>{res.cta.title}</Button>
+              </CardActions>
             </Box>
-
           </Card>
       </Grid>
     )) 
@@ -116,7 +115,7 @@ export class CardMUI extends Component<IProps> {
   </Grid>
     return (
       <div className="card-wrapper">
-        <h3>{this.props.cardFeature.title}</h3>
+        <h3 {...this.props.cardFeature.$?.title}>{this.props.cardFeature.title}</h3>
         {this.props.cardFeature.align_image_left ? cardImageLeft : cardImageTop}
       </div>
     )

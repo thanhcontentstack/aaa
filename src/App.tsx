@@ -10,6 +10,8 @@ import {
   useRoutes,
 } from "react-router-dom";
 import { MaterialUI } from './pages/MaterialUI';
+import "@contentstack/live-preview-utils/dist/main.css";
+
 
 export class App extends Component {
   render() {

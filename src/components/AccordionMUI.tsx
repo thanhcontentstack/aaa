@@ -28,27 +28,27 @@ interface ILink {
   href: string
 }
 
-export class AccordionMUI extends Component<IProps> {
+export class AccordionMUI extends Component<any> {
 
   render() {
     return (
       <div className="accordion-wrapper">
-        <h3>{this.props.accordionFeature.title}</h3>  
+        <h3 {...this.props.accordionFeature.$?.title}>{this.props.accordionFeature.title}</h3>  
         <Grid>
           <Grid item xs={4}>
             {
-              this.props.accordionFeature.item.map((res: IAccordion, index: number) => (
+              this.props.accordionFeature.item.map((res: any, index: number) => (
                 <Accordion key={index}>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                   >
-                    <Typography>{res.title}</Typography>
+                    <Typography {...res.$?.title}>{res.title}</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>{res.description}</Typography>
-                    <Button className="cta-btn" color="secondary">{res.cta.title}</Button>
+                    <Typography {...res.$?.description}>{res.description}</Typography>
+                    <Button className="cta-btn" color="secondary" {...res.cta.$?.title}>{res.cta.title}</Button>
                   </AccordionDetails>
                 </Accordion>
               ))
